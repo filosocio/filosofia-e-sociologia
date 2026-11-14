@@ -114,6 +114,21 @@ footer p{margin:0 0 8px}
   .grid2{grid-template-columns:1fr}
   section{padding:34px 0}
 }
+
+.send-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:14px;max-width:640px}
+.send-btn{appearance:none;border:0;cursor:pointer;width:100%;background:var(--sun);color:var(--navy);border-radius:14px;padding:18px 18px 14px;box-shadow:0 6px 0 #c58f12;display:grid;gap:4px;text-align:center;font:inherit;transition:transform .08s}
+.send-btn:active{transform:translateY(3px);box-shadow:0 3px 0 #c58f12}
+.send-btn:disabled{opacity:.6;cursor:progress}
+.send-btn:focus-visible{outline:3px solid var(--navy-2);outline-offset:3px}
+.send-main{font-size:22px;font-weight:800}
+.send-sub{font-size:14.5px;font-weight:600;color:#3d3420}
+.after{background:var(--ok-soft);color:#14532d;border-radius:12px;padding:12px 14px;font-size:16px}
+.share{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.share-label{font-weight:700;color:var(--navy);width:100%}
+details.more{border-top:1px solid var(--line);padding-top:10px}
+details.more summary{cursor:pointer;font-weight:700;color:var(--navy-2)}
+.more-body{padding-top:10px}
+.names{font-size:13.5px;color:var(--muted);max-height:180px;overflow:auto;background:#faf7ef;border-radius:10px;padding:10px 12px}
 </style>
 </head>
 <body>
@@ -129,7 +144,7 @@ footer p{margin:0 0 8px}
       <span class="kicker">Mobilização popular</span>
       <h1>O PL 1466/2026 está pronto. <em>Falta votar.</em></h1>
       <p class="lead">O projeto garante duas horas semanais de Filosofia e de Sociologia em todas as séries do ensino médio, com professores formados na área. Agora depende da Comissão de Educação da Câmara.</p>
-      <a class="cta" href="#participe">Escrever para os deputados ↓</a>
+      <a class="cta" href="#participe">Mandar meu e-mail ↓</a>
       <p class="countdown">Faltam <b id="heroDays">--</b> dias para o recesso parlamentar de 22 de dezembro.</p>
     </div>
     <div class="hero-art" id="heroArt">
@@ -167,67 +182,81 @@ footer p{margin:0 0 8px}
 
 <section id="participe" style="padding-top:8px">
   <div class="wrap">
-    <h2>Participe em dois minutos</h2>
+    <h2>Mande seu e-mail em um minuto</h2>
     <p class="sub">O e-mail sai da sua própria conta, assinado com o seu nome. É isso que faz os gabinetes prestarem atenção: mensagens reais de pessoas reais.</p>
 
-    <div class="step">
-      <div class="step-head"><span class="badge">1</span><h3>Assine</h3></div>
+    <div class="send-card">
+      <div>
+        <label for="fNome">Seu nome *</label>
+        <input id="fNome" autocomplete="name" placeholder="Nome e sobrenome">
+      </div>
       <div class="grid2">
-        <div>
-          <label for="fNome">Seu nome *</label>
-          <input id="fNome" autocomplete="name" placeholder="Nome e sobrenome">
-        </div>
         <div>
           <label for="fCidade">Cidade e estado</label>
           <input id="fCidade" autocomplete="address-level2" placeholder="Ex.: Sorocaba/SP">
         </div>
+        <div>
+          <label for="fQuem">Você é</label>
+          <select id="fQuem">
+            <option value="">Prefiro não dizer</option>
+            <option>Professor(a) de Filosofia</option>
+            <option>Professor(a) de Sociologia</option>
+            <option>Professor(a) da educação básica</option>
+            <option>Estudante do ensino médio</option>
+            <option>Estudante universitário(a)</option>
+            <option>Mãe, pai ou responsável</option>
+            <option>Pesquisador(a)</option>
+            <option value="__outro">Outro…</option>
+          </select>
+          <input id="fQuemOutro" placeholder="Escreva aqui" style="margin-top:8px" hidden>
+        </div>
       </div>
-      <div style="margin-top:12px">
-        <label for="fQuem">Você é</label>
-        <select id="fQuem">
-          <option value="">Prefiro não dizer</option>
-          <option>Professor(a) de Filosofia</option>
-          <option>Professor(a) de Sociologia</option>
-          <option>Professor(a) da educação básica</option>
-          <option>Estudante do ensino médio</option>
-          <option>Estudante universitário(a)</option>
-          <option>Mãe, pai ou responsável</option>
-          <option>Pesquisador(a)</option>
-          <option value="__outro">Outro…</option>
-        </select>
-        <input id="fQuemOutro" placeholder="Escreva aqui" style="margin-top:8px" hidden>
+
+      <button id="btnEnviar" class="send-btn" type="button" disabled>
+        <span class="send-main">Enviar meu e-mail</span>
+        <span class="send-sub" id="sendSub">Carregando a lista oficial de deputados…</span>
+      </button>
+
+      <div class="after" id="after" hidden>
+        <strong>Seu e-mail abriu já preenchido.</strong> Confira e toque em <b>Enviar</b> no seu app de e-mail. Pronto: sua mensagem chega aos deputados.
       </div>
-      <div class="preview-sign" id="signPreview" aria-live="polite"></div>
-      <p class="hint">Nada do que você digita sai do seu aparelho. Esses dados só servem para assinar o e-mail.</p>
-    </div>
 
-    <div class="step">
-      <div class="step-head"><span class="badge">2</span><h3>Confira o texto (pode editar)</h3></div>
-      <label for="fAssunto">Assunto</label>
-      <input id="fAssunto">
-      <label for="fCorpo" style="margin-top:12px">Mensagem</label>
-      <textarea id="fCorpo"></textarea>
-      <p class="hint">A saudação ("Excelentíssimas deputadas…", "Senhor Presidente…") entra sozinha, conforme o destinatário. Sua assinatura entra no final.</p>
-      <div class="btns" style="margin-top:8px">
-        <button class="btn btn-alt" id="btnReset" type="button">Voltar ao texto original</button>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-head"><span class="badge">3</span><h3>Envie</h3></div>
-      <p class="hint" style="margin-top:-4px;margin-bottom:14px">Cada botão abre um e-mail pronto. Para os grupos grandes, os destinatários vêm em lotes de até <span class="batchN">20</span> para não cair em filtro de spam. Envie um lote, volte aqui e envie o próximo.</p>
-      <div id="loadStatus" class="status loading">Carregando a lista oficial de deputados da Câmara…</div>
-      <div id="groups"></div>
-      <p class="progress" id="progress"></p>
-    </div>
-
-    <div class="step">
-      <div class="step-head"><span class="badge">4</span><h3>Chame mais gente</h3></div>
-      <p class="sub" style="margin-bottom:12px">Cada pessoa que escreve conta. Mande para colegas, grupos da escola e da faculdade.</p>
       <div class="share">
+        <span class="share-label">Depois, chame mais gente:</span>
         <a class="btn btn-wa" id="btnWa" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
-        <button class="btn btn-alt" id="btnCopyLink" type="button">Copiar link do site</button>
+        <button class="btn btn-alt" id="btnCopyLink" type="button">Copiar link</button>
       </div>
+
+      <details class="more">
+        <summary>Ver o texto e para quem vai</summary>
+        <div class="more-body">
+          <p class="hint" id="destResumo"></p>
+          <div class="names" id="destLista"></div>
+          <label for="fAssunto" style="margin-top:14px">Assunto</label>
+          <input id="fAssunto">
+          <label for="fCorpo" style="margin-top:12px">Mensagem (pode editar)</label>
+          <textarea id="fCorpo"></textarea>
+          <p class="hint">A saudação entra no começo e sua assinatura no final, sozinhas.</p>
+          <button class="btn btn-alt" id="btnReset" type="button">Voltar ao texto original</button>
+        </div>
+      </details>
+
+      <details class="more">
+        <summary>O e-mail não abriu?</summary>
+        <div class="more-body">
+          <p class="hint" style="margin-top:0">Tente pelo outro caminho:</p>
+          <div class="btns"><a class="btn btn-main" id="btnOutro" href="#" target="_blank" rel="noopener"></a></div>
+          <p class="hint">Ou copie e cole no seu e-mail, nesta ordem:</p>
+          <div class="btns">
+            <button class="btn btn-alt" type="button" id="cpPara">1. Copiar destinatários</button>
+            <button class="btn btn-alt" type="button" id="cpAssunto">2. Copiar assunto</button>
+            <button class="btn btn-alt" type="button" id="cpTexto">3. Copiar mensagem</button>
+          </div>
+          <p class="hint">Cole todos os endereços no campo "Cco" (cópia oculta).</p>
+        </div>
+      </details>
+
+      <div class="status" id="loadStatus" hidden></div>
     </div>
   </div>
 </section>
@@ -244,14 +273,18 @@ footer p{margin:0 0 8px}
     <details class="faq"><summary>Por que escrever também para quem não está na comissão?</summary>
       <p>Líderes e bancadas negociam a pauta. Quanto mais deputados souberem que o tema importa para quem vota neles, mais fácil fica colocar o projeto em votação, aqui e nas próximas etapas.</p>
     </details>
+    <details class="faq"><summary>Por que a maioria vai em cópia oculta?</summary>
+      <p>O e-mail vai "Para" o presidente da Comissão de Educação e a relatora, que decidem a pauta. Os demais deputados e as presidências da Câmara e do Senado recebem em cópia oculta. Assim cada gabinete recebe uma mensagem limpa, sem uma lista enorme de endereços no topo.</p>
+    </details>
     <details class="faq"><summary>E a Presidência da República?</summary>
       <p>A Presidência não divulga e-mail para o público. O canal oficial é o Fala.BR, a plataforma de ouvidoria do governo federal: escolha "Sugestão", busque o órgão "Presidência da República" e cole o texto.</p>
+      <div class="btns" style="margin-top:10px"><button type="button" class="btn btn-alt" id="btnCopyPR">Copiar a mensagem</button><a class="btn btn-alt" href="https://falabr.cgu.gov.br/v2/manifestacoes/registrar" target="_blank" rel="noopener">Abrir o Fala.BR</a></div>
     </details>
     <details class="faq"><summary>De onde vêm os e-mails dos deputados?</summary>
       <p>Da base oficial de Dados Abertos da Câmara dos Deputados, consultada no momento em que você abre esta página. Assim a lista acompanha mudanças, como suplentes que assumem. Os endereços da Presidência da Câmara e do Senado vêm das páginas oficiais de cada Casa.</p>
     </details>
     <details class="faq"><summary>Vocês guardam meus dados?</summary>
-      <p>Não. Este site não tem cadastro, não usa cookies nem ferramentas de rastreamento e não recebe o que você digita. O e-mail é enviado pela sua própria conta. O site só lembra, no seu navegador, quais lotes você já enviou.</p>
+      <p>Não. Este site não tem cadastro, não usa cookies nem ferramentas de rastreamento e não recebe o que você digita. O e-mail é enviado pela sua própria conta. O site só lembra seu nome e cidade no seu próprio navegador, para você não precisar digitar de novo.</p>
     </details>
   </div>
 </section>
@@ -270,10 +303,10 @@ footer p{margin:0 0 8px}
 /* =================== CONFIGURAÇÃO (edite aqui) =================== */
 const CONFIG = {
   organizador: "Organização: Movimento Filosofia e Sociologia na Escola", // troque pelo nome do coletivo/entidades
-  siteUrl: "",            // depois de publicar, cole o endereço aqui (ex.: https://filosofiaesociologia.pages.dev)
+  siteUrl: "",            // depois de publicar, cole o endereço aqui (ex.: https://usuario.github.io/filosofia-e-sociologia/)
   recesso: "2026-12-22",  // fim da sessão legislativa
-  tamanhoLote: 20,        // destinatários por e-mail nos grupos grandes
   partidosEsquerda: ["PT","PSOL","PCdoB","PV","REDE","PDT","PSB"],
+  saudacao: "Excelentíssimas Senhoras e Excelentíssimos Senhores Parlamentares,",
   assunto: "Peço a votação do substitutivo ao PL 1466/2026 (Filosofia e Sociologia)",
   texto:
 `Solicito seu apoio à aprovação, de forma célere, do texto substitutivo da deputada Maria do Rosário (PT-RS) ao PL 1466/2026, que garante Filosofia e Sociologia em todas as séries do ensino médio.
@@ -285,25 +318,18 @@ Hoje a lei já inclui Filosofia e Sociologia na Formação Geral Básica, mas n�
 O parecer está pronto e não recebeu emendas, mas foi retirado da pauta da Comissão de Educação em 11 de novembro. Peço que o projeto seja votado ainda em 2026, antes do recesso parlamentar.`
 };
 
-/* Contatos verificados nas páginas oficiais (nov/2026). Servem também de reserva se a base da Câmara não responder. */
-const FIXOS = {
-  prioridade: [
-    {nome:"Benes Leocádio", info:"UNIÃO-RN · presidente da Comissão de Educação", email:"dep.benesleocadio@camara.leg.br"},
-    {nome:"Maria do Rosário", info:"PT-RS · relatora do PL 1466/2026", email:"dep.mariadorosario@camara.leg.br"}
-  ],
-  camara: [
-    {nome:"Presidência da Câmara dos Deputados", info:"e-mail institucional", email:"presidencia@camara.leg.br"},
-    {nome:"Hugo Motta", info:"REPUBLICANOS-PB · presidente da Câmara", email:"dep.hugomotta@camara.leg.br"}
-  ],
-  senado: [
-    {nome:"Presidência do Senado Federal", info:"e-mail institucional", email:"presidencia@senado.leg.br"},
-    {nome:"Davi Alcolumbre", info:"UNIÃO-AP · presidente do Senado", email:"sen.davialcolumbre@senado.leg.br"}
-  ],
-  janones: [
-    {nome:"André Janones", info:"REDE-MG", email:"dep.andrejanones@camara.leg.br"}
-  ]
-};
-const FALABR = "https://falabr.cgu.gov.br/v2/manifestacoes/registrar";
+/* Contatos verificados nas páginas oficiais (nov/2026). Também servem de reserva se a base da Câmara não responder. */
+const PARA = [ // vão no campo "Para": quem decide a pauta
+  {nome:"Benes Leocádio", info:"UNIÃO-RN · presidente da Comissão de Educação", email:"dep.benesleocadio@camara.leg.br"},
+  {nome:"Maria do Rosário", info:"PT-RS · relatora do PL 1466/2026", email:"dep.mariadorosario@camara.leg.br"}
+];
+const FIXOS_CCO = [ // vão em cópia oculta
+  {nome:"Presidência da Câmara dos Deputados", info:"institucional", email:"presidencia@camara.leg.br"},
+  {nome:"Hugo Motta", info:"REPUBLICANOS-PB · presidente da Câmara", email:"dep.hugomotta@camara.leg.br"},
+  {nome:"Presidência do Senado Federal", info:"institucional", email:"presidencia@senado.leg.br"},
+  {nome:"Davi Alcolumbre", info:"UNIÃO-AP · presidente do Senado", email:"sen.davialcolumbre@senado.leg.br"},
+  {nome:"André Janones", info:"REDE-MG", email:"dep.andrejanones@camara.leg.br"}
+];
 const API = "https://dadosabertos.camara.leg.br/api/v2";
 /* ================================================================= */
 
@@ -312,7 +338,7 @@ const store = {
   get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
   set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 };
-function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2200); }
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2400); }
 async function copiar(txt, msg){
   try{ await navigator.clipboard.writeText(txt); }
   catch(e){ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(_){} ta.remove(); }
@@ -320,21 +346,18 @@ async function copiar(txt, msg){
 }
 const norm = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim();
 
-/* ---------- contagem regressiva ---------- */
+/* ---------- contagem regressiva e rodapé ---------- */
 (function(){
   const fim = new Date(CONFIG.recesso+"T23:59:59-03:00");
   const d = Math.max(0, Math.ceil((fim - new Date())/86400000));
   $("#heroDays").textContent = d; $("#topDays").textContent = d;
   $("#orgName").textContent = CONFIG.organizador;
-  document.querySelectorAll(".batchN").forEach(e=>e.textContent=CONFIG.tamanhoLote);
 })();
 
-/* ---------- imagens opcionais: aparecem só se existirem ---------- */
-(function(){
-  document.querySelectorAll("img[data-src]").forEach(el=>{
-    const i=new Image(); i.onload=()=>{ el.src=i.src; el.hidden=false; }; i.src=el.dataset.src;
-  });
-})();
+/* ---------- ícones dos cartões (aparecem só se existirem) ---------- */
+document.querySelectorAll("img[data-src]").forEach(el=>{
+  const i=new Image(); i.onload=()=>{ el.src=i.src; el.hidden=false; }; i.src=el.dataset.src;
+});
 
 /* ---------- assinatura e texto ---------- */
 const fNome=$("#fNome"), fCidade=$("#fCidade"), fQuem=$("#fQuem"), fQuemOutro=$("#fQuemOutro"), fAssunto=$("#fAssunto"), fCorpo=$("#fCorpo");
@@ -343,93 +366,64 @@ fCorpo.value = store.get("corpo") || CONFIG.texto;
 fNome.value = store.get("nome") || ""; fCidade.value = store.get("cidade") || "";
 function quem(){ return fQuem.value==="__outro" ? fQuemOutro.value.trim() : fQuem.value; }
 function assinatura(){
-  const nome = fNome.value.trim() || "[seu nome]";
   const linha2 = [quem(), fCidade.value.trim()].filter(Boolean).join(" · ");
-  return "Atenciosamente,\n" + nome + (linha2 ? "\n" + linha2 : "");
+  return "Atenciosamente,\n" + (fNome.value.trim() || "[seu nome]") + (linha2 ? "\n" + linha2 : "");
 }
-function atualizaAssinatura(){
-  $("#signPreview").textContent = assinatura();
-  store.set("nome", fNome.value); store.set("cidade", fCidade.value);
-}
-fQuem.addEventListener("change", ()=>{ fQuemOutro.hidden = fQuem.value!=="__outro"; atualizaAssinatura(); });
-[fNome,fCidade,fQuemOutro].forEach(el=>el.addEventListener("input", atualizaAssinatura));
+function mensagem(){ return CONFIG.saudacao + "\n\n" + fCorpo.value.trim() + "\n\n" + assinatura(); }
+fQuem.addEventListener("change", ()=>{ fQuemOutro.hidden = fQuem.value!=="__outro"; });
+fNome.addEventListener("input", ()=>store.set("nome", fNome.value));
+fCidade.addEventListener("input", ()=>store.set("cidade", fCidade.value));
 fAssunto.addEventListener("input", ()=>store.set("assunto", fAssunto.value));
 fCorpo.addEventListener("input", ()=>store.set("corpo", fCorpo.value));
 $("#btnReset").addEventListener("click", ()=>{ fAssunto.value=CONFIG.assunto; fCorpo.value=CONFIG.texto; store.set("assunto",""); store.set("corpo",""); toast("Texto original restaurado"); });
-atualizaAssinatura();
 
-function mensagem(saudacao){ return saudacao + "\n\n" + fCorpo.value.trim() + "\n\n" + assinatura(); }
 function precisaNome(){
-  if(!fNome.value.trim()){ toast("Coloque seu nome no passo 1 antes de enviar"); fNome.focus(); fNome.scrollIntoView({behavior:"smooth",block:"center"}); return true; }
-  return false;
-}
-function linkMailto(emails, saudacao){
-  return "mailto:" + emails.join(",") + "?subject=" + encodeURIComponent(fAssunto.value.trim()) + "&body=" + encodeURIComponent(mensagem(saudacao));
-}
-function linkGmail(emails, saudacao){
-  return "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(emails.join(",")) + "&su=" + encodeURIComponent(fAssunto.value.trim()) + "&body=" + encodeURIComponent(mensagem(saudacao));
+  if(fNome.value.trim()) return false;
+  toast("Escreva seu nome para assinar o e-mail");
+  fNome.focus(); fNome.scrollIntoView({behavior:"smooth",block:"center"});
+  return true;
 }
 
-/* ---------- desenho dos grupos ---------- */
-const SAUD_DEP = "Excelentíssimas Senhoras Deputadas e Excelentíssimos Senhores Deputados,";
-function lotes(lista, n){ const out=[]; for(let i=0;i<lista.length;i+=n) out.push(lista.slice(i,i+n)); return out; }
-
-function renderLote(container, id, titulo, pessoas, saudacao){
-  const emails = pessoas.map(p=>p.email);
-  const div = document.createElement("div");
-  div.className = "lot" + (store.get("enviado:"+id) ? " sent" : "");
-  div.innerHTML = `<div class="lot-title"><span></span><span class="done">✓ enviado</span></div>
-    <details><summary>Ver destinatários</summary><div class="names"></div></details>
-    <div class="btns"></div>`;
-  div.querySelector(".lot-title span").textContent = titulo;
-  div.querySelector(".names").textContent = pessoas.map(p=>p.nome + (p.info?" ("+p.info+")":"")).join("; ");
-  const btns = div.querySelector(".btns");
-  const marcar = () => { store.set("enviado:"+id,"1"); div.classList.add("sent"); atualizaProgresso(); };
-  const a1 = document.createElement("a"); a1.className="btn btn-main"; a1.textContent="Abrir no app de e-mail"; a1.href="#";
-  a1.addEventListener("click", e=>{ if(precisaNome()){e.preventDefault();return;} a1.href=linkMailto(emails,saudacao); marcar(); });
-  const a2 = document.createElement("a"); a2.className="btn btn-alt"; a2.textContent="Abrir no Gmail"; a2.href="#"; a2.target="_blank"; a2.rel="noopener";
-  a2.addEventListener("click", e=>{ if(precisaNome()){e.preventDefault();return;} a2.href=linkGmail(emails,saudacao); marcar(); });
-  const b3 = document.createElement("button"); b3.type="button"; b3.className="btn btn-ghost"; b3.textContent="copiar endereços";
-  b3.addEventListener("click", ()=>copiar(emails.join(", "), "Endereços copiados"));
-  btns.append(a1,a2,b3);
-  container.appendChild(div);
+/* ---------- destinatários ---------- */
+let CCO = FIXOS_CCO.slice();
+const emailsPara = () => PARA.map(p=>p.email);
+const emailsCco = () => CCO.map(p=>p.email);
+function linkMailto(){
+  return "mailto:" + emailsPara().join(",") +
+    "?bcc=" + emailsCco().join(",") +
+    "&subject=" + encodeURIComponent(fAssunto.value.trim()) +
+    "&body=" + encodeURIComponent(mensagem());
 }
-
-function renderGrupo(chave, titulo, desc, pessoas, saudacao, porLote){
-  if(!pessoas.length) return;
-  const g = document.createElement("div"); g.className="group";
-  g.innerHTML = `<h4></h4><p class="desc"></p><div class="lots"></div>`;
-  g.querySelector("h4").textContent = titulo;
-  g.querySelector(".desc").textContent = desc;
-  const box = g.querySelector(".lots");
-  if(porLote){
-    const ls = lotes(pessoas, CONFIG.tamanhoLote);
-    ls.forEach((l,i)=> renderLote(box, chave+":"+i+":"+l.length,
-      ls.length===1 && l.length<=3 ? l.map(p=>p.nome).join(" e ") : `Lote ${i+1} de ${ls.length} · ${l.length} pessoas`, l, saudacao));
-  } else {
-    pessoas.forEach((p,i)=> renderLote(box, chave+":"+p.email, p.nome, [p], p.saudacao || saudacao));
-  }
-  $("#groups").appendChild(g);
+function linkGmail(){
+  return "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(emailsPara().join(",")) +
+    "&bcc=" + encodeURIComponent(emailsCco().join(",")) +
+    "&su=" + encodeURIComponent(fAssunto.value.trim()) +
+    "&body=" + encodeURIComponent(mensagem());
 }
+// No celular, o app de e-mail abre direto. No computador, o Gmail no navegador é o caminho mais seguro.
+const noCelular = window.matchMedia && window.matchMedia("(pointer:coarse)").matches;
 
-function renderPresidencia(){
-  const g = document.createElement("div"); g.className="group";
-  g.innerHTML = `<h4>Presidência da República</h4>
-    <p class="desc">A Presidência não divulga e-mail ao público. O canal oficial é o Fala.BR: escolha "Sugestão", procure o órgão "Presidência da República" e cole a mensagem.</p>
-    <div class="btns"><button type="button" class="btn btn-main" id="btnCopyPR">1. Copiar a mensagem</button>
-    <a class="btn btn-alt" href="${FALABR}" target="_blank" rel="noopener">2. Abrir o Fala.BR</a></div>`;
-  $("#groups").appendChild(g);
-  $("#btnCopyPR").addEventListener("click", ()=>{
-    if(precisaNome()) return;
-    copiar(fAssunto.value.trim() + "\n\n" + mensagem("Excelentíssimo Senhor Presidente da República,"), "Mensagem copiada. Agora abra o Fala.BR");
-  });
-}
-
-function atualizaProgresso(){
-  const total = document.querySelectorAll(".lot").length;
-  const feitos = document.querySelectorAll(".lot.sent").length;
-  $("#progress").textContent = total ? `Você já enviou ${feitos} de ${total} e-mails.` + (feitos===total ? " Obrigado! Agora chame mais gente no passo 4." : "") : "";
-}
+$("#btnEnviar").addEventListener("click", ()=>{
+  if(precisaNome()) return;
+  if(noCelular){ window.location.href = linkMailto(); }
+  else { window.open(linkGmail(), "_blank", "noopener"); }
+  $("#after").hidden = false;
+});
+const outro = $("#btnOutro");
+outro.textContent = noCelular ? "Abrir no Gmail" : "Abrir no app de e-mail do computador";
+outro.addEventListener("click", e=>{
+  if(precisaNome()){ e.preventDefault(); return; }
+  outro.href = noCelular ? linkGmail() : linkMailto();
+  if(!noCelular) outro.removeAttribute("target");
+  $("#after").hidden = false;
+});
+$("#cpPara").addEventListener("click", ()=>copiar(emailsPara().concat(emailsCco()).join(", "), "Destinatários copiados"));
+$("#cpAssunto").addEventListener("click", ()=>copiar(fAssunto.value.trim(), "Assunto copiado"));
+$("#cpTexto").addEventListener("click", ()=>{ if(!precisaNome()) copiar(mensagem(), "Mensagem copiada"); });
+$("#btnCopyPR").addEventListener("click", ()=>{
+  if(precisaNome()) return;
+  copiar(fAssunto.value.trim() + "\n\n" + mensagem().replace(CONFIG.saudacao, "Excelentíssimo Senhor Presidente da República,"), "Mensagem copiada. Agora abra o Fala.BR");
+});
 
 /* ---------- dados oficiais da Câmara ---------- */
 async function getJSON(url){
@@ -455,77 +449,64 @@ async function emailDe(dep){
     return ((st.gabinete||{}).email || st.email || "").trim().toLowerCase();
   }catch(e){ return ""; }
 }
-async function idComissaoEducacao(){
+async function membrosCE(){
   const orgaos = await getAll(API+"/orgaos?sigla=CE&itens=100");
   const cand = orgaos.filter(o=>norm(o.nome)==="comissao de educacao");
   if(!cand.length) throw new Error("Comissão de Educação não encontrada");
   cand.sort((a,b)=> (b.codTipoOrgao==2)-(a.codTipoOrgao==2) || b.id-a.id);
-  return cand[0].id;
-}
-async function membrosCE(){
-  const id = await idComissaoEducacao();
   const hoje = new Date().toISOString().slice(0,10);
-  const m = await getAll(API+`/orgaos/${id}/membros?itens=100`);
-  const ativos = m.filter(x=>!x.dataFim || x.dataFim.slice(0,10) >= hoje);
+  const m = await getAll(API+`/orgaos/${cand[0].id}/membros?itens=100`);
   const vistos = new Map();
-  for(const x of ativos){ if(!vistos.has(x.id)) vistos.set(x.id, x); }
+  m.filter(x=>!x.dataFim || x.dataFim.slice(0,10) >= hoje).forEach(x=>{ if(!vistos.has(x.id)) vistos.set(x.id,x); });
   return Array.from(vistos.values());
 }
 async function deputadosEsquerda(){
   const qs = CONFIG.partidosEsquerda.map(p=>"siglaPartido="+encodeURIComponent(p)).join("&");
   return getAll(API+`/deputados?${qs}&itens=100&ordem=ASC&ordenarPor=nome`);
 }
-async function comEmails(lista, rotulo){
+async function comEmails(lista, extra){
   const out=[];
   for(const d of lista){
     const email = await emailDe(d);
-    if(email) out.push({nome:d.nome, info:[d.siglaPartido+"-"+d.siglaUf, rotulo && rotulo(d)].filter(Boolean).join(" · "), email});
+    if(email) out.push({nome:d.nome, info:[d.siglaPartido+"-"+d.siglaUf, extra&&extra(d)].filter(Boolean).join(" · "), email});
   }
   return out;
 }
-function ordemTitulo(t){ t=norm(t); if(t.startsWith("presidente")) return 0; if(t.includes("vice")) return 1; if(t.startsWith("titular")) return 2; return 3; }
+
+function mostraDestinatarios(qtdCE, qtdEsq){
+  const total = PARA.length + CCO.length;
+  const partes = [];
+  if(qtdCE) partes.push(`${qtdCE} da Comissão de Educação`);
+  if(qtdEsq) partes.push(`${qtdEsq} de bancadas de esquerda e centro-esquerda`);
+  $("#sendSub").textContent = `Vai para ${total} destinatários, entre deputados e as presidências da Câmara e do Senado`;
+  $("#destResumo").innerHTML = "";
+  $("#destResumo").textContent = `Para: ${PARA.map(p=>p.nome).join(" e ")}. Cópia oculta: ${CCO.length} destinatários` + (partes.length ? ` (${partes.join(", ")}, além das presidências e do deputado André Janones).` : " (presidências da Câmara e do Senado e deputado André Janones).");
+  $("#destLista").textContent = PARA.concat(CCO).map(p=>p.nome + (p.info ? " ("+p.info+")" : "")).join(" · ");
+  $("#btnEnviar").disabled = false;
+}
 
 async function carregar(){
-  const usados = new Set([...FIXOS.prioridade, ...FIXOS.camara, ...FIXOS.senado, ...FIXOS.janones].map(p=>p.email));
-  const status = $("#loadStatus");
-  let ce=[], esq=[], erro=null;
+  const usados = new Set(PARA.concat(FIXOS_CCO).map(p=>p.email));
+  let ce=[], esq=[];
   try{
     const [mce, mesq] = await Promise.all([membrosCE(), deputadosEsquerda()]);
-    mce.sort((a,b)=>ordemTitulo(a.titulo)-ordemTitulo(b.titulo) || a.nome.localeCompare(b.nome,"pt"));
     ce = (await comEmails(mce, d=>d.titulo)).filter(p=>!usados.has(p.email));
     ce.forEach(p=>usados.add(p.email));
     esq = (await comEmails(mesq)).filter(p=>!usados.has(p.email));
-  }catch(e){ erro=e; console.warn(e); }
-
-  renderGrupo("prio", "Prioridade: quem decide a pauta", "O presidente da Comissão de Educação põe o projeto na pauta, e a relatora defende o texto.", FIXOS.prioridade, SAUD_DEP, true);
-  if(ce.length) renderGrupo("ce", "Comissão de Educação: titulares e suplentes", `São ${ce.length} deputados que votam o projeto na comissão (fora os dois acima).`, ce, SAUD_DEP, true);
-  if(esq.length) renderGrupo("esq", "Bancadas de esquerda e centro-esquerda", `${esq.length} deputados de ${CONFIG.partidosEsquerda.join(", ")} que não estão na comissão. Eles ajudam a negociar a pauta.`, esq, SAUD_DEP, true);
-  // presidências e destaques: um e-mail para cada, com os endereços oficiais de cada um
-  const g = document.createElement("div"); g.className="group";
-  g.innerHTML = `<h4>Presidências e destaques</h4><p class="desc">Um e-mail para cada um.</p><div class="lots"></div>`;
-  $("#groups").appendChild(g);
-  const box = g.querySelector(".lots");
-  renderLote(box, "pres:camara", "Presidência da Câmara (Hugo Motta)", FIXOS.camara, "Excelentíssimo Senhor Presidente da Câmara dos Deputados,");
-  renderLote(box, "pres:senado", "Presidência do Senado (Davi Alcolumbre)", FIXOS.senado, "Excelentíssimo Senhor Presidente do Senado Federal,");
-  renderLote(box, "dep:janones", "Deputado André Janones", FIXOS.janones, "Excelentíssimo Senhor Deputado André Janones,");
-  renderPresidencia();
-
-  if(erro){
-    status.className="status err";
-    status.textContent="Não consegui carregar agora a lista completa da Câmara (comissão e bancadas). Recarregue a página em alguns minutos. Enquanto isso, os contatos principais abaixo já funcionam.";
-  } else {
-    status.className="status ok";
-    const tot = FIXOS.prioridade.length + ce.length + esq.length + FIXOS.camara.length + FIXOS.senado.length + FIXOS.janones.length;
-    status.textContent=`Lista oficial carregada: ${tot} endereços, direto dos Dados Abertos da Câmara.`;
-    $("#dataInfo").textContent = "Lista de deputados consultada em " + new Date().toLocaleString("pt-BR") + ".";
+    CCO = FIXOS_CCO.concat(ce, esq);
+    $("#dataInfo").textContent = "Lista de deputados consultada nos Dados Abertos da Câmara em " + new Date().toLocaleString("pt-BR") + ".";
+  }catch(e){
+    console.warn(e);
+    const st = $("#loadStatus"); st.hidden=false; st.className="status err";
+    st.textContent = "A base da Câmara não respondeu agora, então o e-mail vai só para os contatos principais. Para incluir a comissão inteira e as bancadas, recarregue a página daqui a alguns minutos.";
   }
-  atualizaProgresso();
+  mostraDestinatarios(ce.length, esq.length);
 }
 carregar();
 
 /* ---------- compartilhar ---------- */
 const urlSite = CONFIG.siteUrl || location.href.split("#")[0];
-$("#btnWa").href = "https://wa.me/?text=" + encodeURIComponent("Filosofia e Sociologia no ensino médio: o PL 1466/2026 está pronto para votar na Câmara. Mande seu e-mail aos deputados em dois minutos: " + urlSite);
+$("#btnWa").href = "https://wa.me/?text=" + encodeURIComponent("Filosofia e Sociologia no ensino médio: o PL 1466/2026 está pronto para votar na Câmara. Mande seu e-mail aos deputados em um minuto: " + urlSite);
 $("#btnCopyLink").addEventListener("click", ()=>copiar(urlSite, "Link copiado"));
 </script>
 </body>
